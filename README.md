@@ -1,27 +1,24 @@
-# ChangeDetection
+# ChangeDetection in Angular
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.8.
+This repo is used as a Playground to better understand Change Detection Strategies in Angular.
 
-## Development server
+## Change Detection Strategies
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+There are two change detection strategies that can be used. The default strategy set in angular is ... well, **ChangeDetection.Default**.
+This basically lets Angular do its magic and take care of Change Detection all by itself. But since Angular does not know where exactly in the model
+things change when events happen, it simply walks through the entire component tree every single time, top to bottom, as soon as something happens.
 
-## Code scaffolding
+### ChangeDetection.OnPush
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+The second strategy we can use is called **ChangeDetection.OnPush**. This is set to in the metadata of a component like so:
 
-## Build
+```typescript
+@Component({
+  ...
+  changeDetection: ChangeDetection.OnPush
+})
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+By doing this, change detection is only triggered when a Component's `@Input properties` receive a new object. It is not triggered if the properties of that object change (Sidenote: If primitives are injected through @Input, it is also triggered, since primitives are immutable and new references).
+So change detection is only triggered if a reference is changed to a new object and not if the values on said object change.
+Or in other words: If we set the ChangeDetectionStrategy to **OnPush** change detection treats objects as immutable and therefore only triggers if it gets a new reference to a new object.

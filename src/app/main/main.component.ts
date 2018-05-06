@@ -13,9 +13,6 @@ export class MainComponent implements OnChanges {
   counter = 0;
 
   constructor() {
-    // setTimeout(() => {
-    //   this.status = { changed: true };
-    // }, 2000);
   }
 
   ngOnChanges() {
